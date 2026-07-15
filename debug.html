@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Debug Page</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: white;
+        }
+        .test { margin: 20px 0; padding: 20px; border: 2px solid #333; }
+        img { display: block; margin: 10px 0; max-width: 100%; border: 3px solid red; }
+        .success { border-color: green !important; }
+        h1 { color: #333; margin-bottom: 20px; }
+        h2 { color: #666; margin: 15px 0 10px 0; }
+        .info { background: #f0f0f0; padding: 10px; margin: 10px 0; font-family: monospace; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Image Debug Page</h1>
+    
+    <div class="info">
+        <strong>Current Path:</strong> <span id="path"></span><br>
+        <strong>Protocol:</strong> <span id="protocol"></span><br>
+        <strong>Full URL:</strong> <span id="fullurl"></span>
+    </div>
+    
+    <div class="test">
+        <h2>Test 1: hero.jpg (direct)</h2>
+        <img id="img1" src="hero.jpg" alt="Hero">
+        <div id="status1">Loading...</div>
+    </div>
+    
+    <div class="test">
+        <h2>Test 2: public/hero.jpg</h2>
+        <img id="img2" src="public/hero.jpg" alt="Hero Public">
+        <div id="status2">Loading...</div>
+    </div>
+    
+    <div class="test">
+        <h2>Test 3: ./hero.jpg</h2>
+        <img id="img3" src="./hero.jpg" alt="Hero Relative">
+        <div id="status3">Loading...</div>
+    </div>
+    
+    <script>
+        // Show current location
+        document.getElementById('path').textContent = window.location.pathname;
+        document.getElementById('protocol').textContent = window.location.protocol;
+        document.getElementById('fullurl').textContent = window.location.href;
+        
+        // Test image 1
+        const img1 = document.getElementById('img1');
+        img1.onload = function() {
+            document.getElementById('status1').innerHTML = '<span style="color:green;font-weight:bold;">✅ SUCCESS! Size: ' + this.naturalWidth + 'x' + this.naturalHeight + '</span>';
+            this.className = 'success';
+        };
+        img1.onerror = function() {
+            document.getElementById('status1').innerHTML = '<span style="color:red;font-weight:bold;">❌ FAILED to load hero.jpg</span>';
+        };
+        
+        // Test image 2
+        const img2 = document.getElementById('img2');
+        img2.onload = function() {
+            document.getElementById('status2').innerHTML = '<span style="color:green;font-weight:bold;">✅ SUCCESS! Size: ' + this.naturalWidth + 'x' + this.naturalHeight + '</span>';
+            this.className = 'success';
+        };
+        img2.onerror = function() {
+            document.getElementById('status2').innerHTML = '<span style="color:red;font-weight:bold;">❌ FAILED to load public/hero.jpg</span>';
+        };
+        
+        // Test image 3
+        const img3 = document.getElementById('img3');
+        img3.onload = function() {
+            document.getElementById('status3').innerHTML = '<span style="color:green;font-weight:bold;">✅ SUCCESS! Size: ' + this.naturalWidth + 'x' + this.naturalHeight + '</span>';
+            this.className = 'success';
+        };
+        img3.onerror = function() {
+            document.getElementById('status3').innerHTML = '<span style="color:red;font-weight:bold;">❌ FAILED to load ./hero.jpg</span>';
+        };
+        
+        // Console logging
+        console.log('Debug page loaded');
+        console.log('Location:', window.location.href);
+        console.log('Attempting to load:', img1.src, img2.src, img3.src);
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Image Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        img {
+            max-width: 300px;
+            margin: 10px;
+            border: 2px solid #333;
+        }
+        .result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <h1>Simple Image Load Test</h1>
+    
+    <h2>Test 1: Direct path</h2>
+    <img src="hero.jpg" alt="Hero" onload="showSuccess(this)" onerror="showError(this)">
+    <div id="result1"></div>
+    
+    <h2>Test 2: Public folder path</h2>
+    <img src="public/hero.jpg" alt="Hero Public" onload="showSuccess2(this)" onerror="showError2(this)">
+    <div id="result2"></div>
+    
+    <h2>Test 3: All images</h2>
+    <div id="allImages"></div>
+    
+    <script>
+        function showSuccess(img) {
+            document.getElementById('result1').innerHTML = '<div class="result success">✅ Image loaded from root! Size: ' + img.naturalWidth + 'x' + img.naturalHeight + '</div>';
+        }
+        
+        function showError(img) {
+            document.getElementById('result1').innerHTML = '<div class="result error">❌ Failed to load from root directory</div>';
+        }
+        
+        function showSuccess2(img) {
+            document.getElementById('result2').innerHTML = '<div class="result success">✅ Image loaded from public/! Size: ' + img.naturalWidth + 'x' + img.naturalHeight + '</div>';
+        }
+        
+        function showError2(img) {
+            document.getElementById('result2').innerHTML = '<div class="result error">❌ Failed to load from public/ directory</div>';
+        }
+        
+        // Test all images
+        const images = ['hero.jpg', 'Bio.jpg', 'Cardioprin.jpg', 'Intermox.jpg', 'Stericef.jpg', 'tussicon.jpg', 'Ostecal.jpg', 'Congesil.jpg', 'Laboratories.jpg'];
+        const container = document.getElementById('allImages');
+        
+        images.forEach(imgName => {
+            const div = document.createElement('div');
+            div.style.display = 'inline-block';
+            div.style.margin = '10px';
+            div.style.textAlign = 'center';
+            
+            const img = document.createElement('img');
+            img.src = imgName;
+            img.alt = imgName;
+            img.style.maxWidth = '150px';
+            
+            const label = document.createElement('p');
+            label.textContent = imgName;
+            label.style.fontSize = '12px';
+            
+            const status = document.createElement('p');
+            status.style.fontSize = '12px';
+            status.innerHTML = '⏳ Loading...';
+            
+            img.onload = function() {
+                status.innerHTML = '<span style="color: green;">✅ Loaded</span>';
+                status.innerHTML += '<br>' + img.naturalWidth + 'x' + img.naturalHeight;
+            };
+            
+            img.onerror = function() {
+                status.innerHTML = '<span style="color: red;">❌ Failed</span>';
+            };
+            
+            div.appendChild(img);
+            div.appendChild(label);
+            div.appendChild(status);
+            container.appendChild(div);
+        });
+        
+        // Log current location
+        console.log('Current URL:', window.location.href);
+        console.log('Base URL:', window.location.origin);
+    </script>
+</body>
+</html>

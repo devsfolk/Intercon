@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Test - Intercon Pharma</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #0052cc;
+        }
+        .status {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .card .info {
+            padding: 15px;
+        }
+        .card .name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .card .path {
+            font-size: 12px;
+            color: #666;
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .success {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .error {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        .loading {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Image Loading Test</h1>
+    
+    <div class="status">
+        <p id="status" class="loading">Testing images...</p>
+        <p id="result"></p>
+    </div>
+
+    <div class="grid" id="imageGrid"></div>
+
+    <script>
+        const images = [
+            { name: 'Hero', path: 'hero.jpg' },
+            { name: 'Laboratories', path: 'Laboratories.jpg' },
+            { name: 'Bio', path: 'Bio.jpg' },
+            { name: 'Cardioprin', path: 'Cardioprin.jpg' },
+            { name: 'Intermox', path: 'Intermox.jpg' },
+            { name: 'Stericef', path: 'Stericef.jpg' },
+            { name: 'Tussicon', path: 'tussicon.jpg' },
+            { name: 'Ostecal', path: 'Ostecal.jpg' },
+            { name: 'Congesil', path: 'Congesil.jpg' }
+        ];
+
+        const grid = document.getElementById('imageGrid');
+        const statusEl = document.getElementById('status');
+        const resultEl = document.getElementById('result');
+        
+        let loadedCount = 0;
+        let failedCount = 0;
+
+        images.forEach(img => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const image = document.createElement('img');
+            image.src = img.path;
+            image.alt = img.name;
+            
+            const info = document.createElement('div');
+            info.className = 'info';
+            
+            const name = document.createElement('div');
+            name.className = 'name';
+            name.textContent = img.name;
+            
+            const path = document.createElement('div');
+            path.className = 'path';
+            path.textContent = img.path;
+            
+            const status = document.createElement('div');
+            status.style.marginTop = '10px';
+            status.style.fontSize = '12px';
+            status.innerHTML = '<span class="loading">⏳ Loading...</span>';
+            
+            image.onload = function() {
+                loadedCount++;
+                status.innerHTML = '<span class="success">✅ Loaded</span>';
+                updateStatus();
+            };
+            
+            image.onerror = function() {
+                failedCount++;
+                status.innerHTML = '<span class="error">❌ Failed</span>';
+                image.style.background = '#fee';
+                updateStatus();
+            };
+            
+            info.appendChild(name);
+            info.appendChild(path);
+            info.appendChild(status);
+            card.appendChild(image);
+            card.appendChild(info);
+            grid.appendChild(card);
+        });
+
+        function updateStatus() {
+            const total = images.length;
+            const checked = loadedCount + failedCount;
+            
+            if (checked === total) {
+                if (failedCount === 0) {
+                    statusEl.innerHTML = '<span class="success">✅ All images loaded successfully!</span>';
+                    resultEl.textContent = `${loadedCount} of ${total} images working perfectly.`;
+                } else {
+                    statusEl.innerHTML = '<span class="error">⚠️ Some images failed to load</span>';
+                    resultEl.textContent = `${loadedCount} loaded, ${failedCount} failed out of ${total} images.`;
+                }
+            } else {
+                statusEl.innerHTML = `<span class="loading">Testing... ${checked}/${total}</span>`;
+            }
+        }
+    </script>
+</body>
+</html>

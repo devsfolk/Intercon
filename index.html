@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Intercon Pharma | Precision Pharmaceutical Engineering</title>
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <script>
+    // Tailwind Config
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              50: '#f4f7fa',
+              100: '#e4ebf3',
+              500: '#0052cc', // Premium Corporate Blue (combining Stripe/Pfizer/Apple vibe)
+              600: '#0043a8',
+              700: '#003380',
+              900: '#001a40',
+            },
+            secondary: {
+              500: '#10b981', // Emerald Green for WHO-GMP compliance/scientific accuracy
+              600: '#059669',
+            },
+            accent: {
+              500: '#0ea5e9', // Vibrant Sky Cyan for modern clinical innovation
+              600: '#0284c7',
+            },
+            slate: {
+              950: '#060913', // Deepest Sleek Blue-black space background
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Inter', 'sans-serif'],
+            mono: ['Inter', 'monospace'],
+          },
+          boxShadow: {
+            'sleek': '0 4px 30px rgba(0, 0, 0, 0.03)',
+            'sleek-hover': '0 10px 40px -10px rgba(0, 82, 204, 0.08), 0 1px 3px rgba(0, 0, 0, 0.01)',
+            'sleek-dark': '0 4px 30px rgba(0, 0, 0, 0.2)',
+            'sleek-dark-hover': '0 10px 40px -10px rgba(14, 165, 233, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)',
+          }
+        }
+      }
+    };
+
+    // Dark Mode Pre-render Lock
+    if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.3);
+      border-radius: 9999px;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: rgba(51, 65, 85, 0.4);
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.5);
+    }
+
+    /* Keyframe Animations */
+    @keyframes blob {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -50px) scale(1.08); }
+      66% { transform: translate(-30px, 30px) scale(0.92); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(0.5deg); }
+    }
+    
+    .animate-blob {
+      animation: blob 10s infinite ease-in-out;
+    }
+    .animate-float {
+      animation: float 6s infinite ease-in-out;
+    }
+
+    /* Sleek Interface Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(226, 232, 240, 0.6);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.85);
+      border-color: rgba(0, 82, 204, 0.25);
+      box-shadow: 0 12px 35px -10px rgba(0, 82, 204, 0.08), 0 1px 3px rgba(0, 0, 0, 0.01);
+    }
+    .dark .glass {
+      background: rgba(10, 15, 30, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .dark .glass:hover {
+      transform: translateY(-4px);
+      background: rgba(10, 15, 30, 0.8);
+      border-color: rgba(14, 165, 233, 0.25);
+      box-shadow: 0 12px 35px -10px rgba(14, 165, 233, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Dynamic Header Glass */
+    header.scrolled {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: rgba(226, 232, 240, 0.8);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+    }
+    .dark header.scrolled {
+      background: rgba(6, 9, 19, 0.75);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom-color: rgba(255, 255, 255, 0.03);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Scroll Reveal Transition */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(15px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Ultra-sleek inputs */
+    input, select, textarea {
+      transition: all 0.2s ease-in-out;
+    }
+    input:focus, select:focus, textarea:focus {
+      box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.12);
+      border-color: rgba(0, 82, 204, 0.5);
+    }
+    .dark input:focus, .dark select:focus, .dark textarea:focus {
+      box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+      border-color: rgba(14, 165, 233, 0.5);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans transition-colors duration-300 relative selection:bg-primary-100 dark:selection:bg-primary-900 overflow-x-hidden">
+
+  <!-- BACKGROUND GRADIENT BLOBS -->
+  <div class="fixed inset-0 -z-10 overflow-hidden pointer-events-none bg-transparent">
+    <div class="absolute -top-40 -left-40 w-96 h-96 rounded-full bg-primary-500/10 dark:bg-primary-500/5 blur-3xl animate-blob"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 rounded-full bg-secondary-500/10 dark:bg-secondary-500/5 blur-3xl animate-blob" style="animation-delay: 2.5s;"></div>
+    <div class="absolute -bottom-40 left-1/3 w-96 h-96 rounded-full bg-accent-500/10 dark:bg-accent-500/5 blur-3xl animate-blob" style="animation-delay: 5s;"></div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3"></div>
+
+  <!-- MODAL WINDOW -->
+  <div id="detail-modal" class="fixed inset-0 z-[999] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm hidden opacity-0 transition-all duration-300">
+    <div class="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden transform scale-95 transition-all duration-300">
+      <button onclick="closeModal()" class="absolute top-4 right-4 w-10 h-10 flex items-center justify-center text-slate-400 hover:text-slate-800 dark:hover:text-white rounded-full bg-slate-100 dark:bg-slate-800 transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+      <div id="modal-body" class="p-8"></div>
+    </div>
+  </div>
+
+  <!-- STICKY GLASS NAVIGATION BAR -->
+  <header class="fixed top-0 left-0 w-full z-50 transition-all duration-300 border-b border-transparent">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#home" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary-500 via-accent-500 to-secondary-500 flex items-center justify-center shadow-lg shadow-primary-500/20">
+          <i class="fa-solid fa-circle-nodes text-white text-lg"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-display font-bold text-lg tracking-wider text-slate-900 dark:text-white group-hover:text-primary-500 transition-colors">INTERCON</span>
+          <span class="font-mono text-[9px] tracking-widest text-slate-500 dark:text-slate-400 -mt-1 uppercase">PHARMACEUTICAL</span>
+        </div>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="hidden lg:flex items-center gap-1">
+        <a href="#home" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Home<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#about" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">About<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#services" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Services<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#products" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Products<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#research" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Research<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#quality" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Quality<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#careers" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Careers<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#news" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Insights<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+        <a href="#contact" class="nav-link px-4 py-2 rounded-lg text-sm font-medium transition-all relative">Contact<span class="nav-indicator absolute bottom-0 left-4 right-4 h-0.5 bg-primary-500 rounded-full scale-x-0 transition-transform duration-300 origin-center"></span></a>
+      </nav>
+
+      <!-- Right Utility Actions -->
+      <div class="flex items-center gap-3">
+        <!-- Theme Switcher -->
+        <button onclick="toggleDarkMode()" class="w-10 h-10 rounded-xl flex items-center justify-center bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all border border-slate-200/50 dark:border-slate-800/50 cursor-pointer text-slate-600 dark:text-slate-300">
+          <i class="fa-solid fa-moon dark:hidden text-md"></i>
+          <i class="fa-solid fa-sun hidden dark:block text-md"></i>
+        </button>
+
+        <!-- Partner CTA -->
+        <a href="#contact" class="hidden sm:flex px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/10 hover:shadow-primary-500/20 hover:-translate-y-0.5 transition-all cursor-pointer">
+          Partner Us
+        </a>
+
+        <!-- Mobile Menu Trigger -->
+        <button onclick="toggleMobileMenu()" class="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center bg-white/50 dark:bg-slate-900/50 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-800/50 cursor-pointer text-slate-600 dark:text-slate-300">
+          <i class="fa-solid fa-bars text-md"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MOBILE NAVIGATION DRAWER -->
+  <div id="mobile-menu" class="fixed inset-y-0 right-0 w-80 z-50 bg-white/95 dark:bg-slate-950/95 backdrop-blur-lg border-l border-slate-200 dark:border-slate-800 transform translate-x-full transition-transform duration-300 shadow-2xl flex flex-col p-8">
+    <div class="flex items-center justify-between mb-8">
+      <span class="font-display font-bold text-lg text-slate-900 dark:text-white uppercase tracking-wider">Navigation</span>
+      <button onclick="toggleMobileMenu()" class="w-10 h-10 rounded-xl flex items-center justify-center bg-slate-100 dark:bg-slate-800 cursor-pointer">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-3">
+      <a onclick="toggleMobileMenu()" href="#home" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Home</a>
+      <a onclick="toggleMobileMenu()" href="#about" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">About Us</a>
+      <a onclick="toggleMobileMenu()" href="#services" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Core Services</a>
+      <a onclick="toggleMobileMenu()" href="#products" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Product Catalog</a>
+      <a onclick="toggleMobileMenu()" href="#research" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Research & Innovation</a>
+      <a onclick="toggleMobileMenu()" href="#quality" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Quality Assurance</a>
+      <a onclick="toggleMobileMenu()" href="#careers" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Careers</a>
+      <a onclick="toggleMobileMenu()" href="#news" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">News & Insights</a>
+      <a onclick="toggleMobileMenu()" href="#contact" class="mobile-nav-link p-3 rounded-xl font-medium hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors">Contact Us</a>
+    </nav>
+  </div>
+
+  <!-- MAIN VIEWPORT CONTAINER -->
+  <main class="pt-20">
+
+    <!-- ================= PAGE 1: HOME ================= -->
+    <section id="page-home" class="page-view transition-all duration-300">
+      <!-- HERO SECTION -->
+      <div class="relative max-w-7xl mx-auto px-6 py-12 md:py-24 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 flex flex-col gap-6">
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-slate-200 dark:border-slate-800 text-xs text-primary-500 font-mono w-max">
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-500"></span>
+            </span>
+            WHO GMP CERTIFIED • DRAP REGISTERED
+          </div>
+          <h2 class="font-display font-bold text-4xl md:text-6xl tracking-tight text-slate-900 dark:text-white leading-tight">
+            Engineering the Future of <span class="bg-gradient-to-r from-primary-500 via-accent-500 to-secondary-500 bg-clip-text text-transparent">Healthcare</span>
+          </h2>
+          <p class="text-slate-600 dark:text-slate-400 text-base md:text-lg leading-relaxed max-w-xl">
+            Intercon Pharma is an elite, multi-million dollar pharmaceutical manufacturer based in Karachi, Pakistan. We lead with scientific integrity, formulating high-grade sterile therapeutics distributed globally.
+          </p>
+          <div class="flex flex-wrap gap-4 mt-2">
+            <a href="#products" class="px-6 py-3.5 rounded-xl font-semibold bg-primary-500 hover:bg-primary-600 text-white shadow-lg shadow-primary-500/15 hover:shadow-primary-500/25 hover:-translate-y-0.5 transition-all">
+              Explore Products
+            </a>
+            <a href="#about" class="px-6 py-3.5 rounded-xl font-semibold bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white border border-slate-200 dark:border-slate-800 hover:-translate-y-0.5 transition-all">
+              About Scientific Philosophy
+            </a>
+          </div>
+        </div>
+        <!-- Floating Hero Image -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+          <div class="absolute inset-0 bg-gradient-to-tr from-accent-500/10 to-primary-500/10 rounded-3xl blur-3xl -z-10"></div>
+          <div class="w-full max-w-md aspect-square bg-slate-200 dark:bg-slate-800 rounded-3xl border border-white/20 shadow-2xl overflow-hidden animate-float">
+            <img src="public/hero1.jfif" alt="Advanced Pharmaceutical Manufacturing Facility" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+          </div>
+          <div class="absolute bottom-6 -left-6 glass border border-slate-200 dark:border-slate-800 px-5 py-4 rounded-2xl flex items-center gap-3 shadow-xl">
+            <i class="fa-solid fa-microscope text-2xl text-accent-500 animate-pulse"></i>
+            <div>
+              <p class="font-bold text-sm tracking-tight text-slate-900 dark:text-white leading-none">Aseptic R&D</p>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">State-of-the-Art sterile facility</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATISTICS (NUMBERS COUNT UP) -->
+      <div id="stats-section" class="bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 py-16 scroll-reveal">
+        <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div class="text-center flex flex-col">
+            <span class="stat-counter font-display text-4xl md:text-5xl font-bold tracking-tight text-primary-500" data-target="45" data-suffix="+">0</span>
+            <span class="font-mono text-[10px] tracking-widest text-slate-500 dark:text-slate-400 mt-2 uppercase">Export Countries</span>
+          </div>
+          <div class="text-center flex flex-col">
+            <span class="stat-counter font-display text-4xl md:text-5xl font-bold tracking-tight text-accent-500" data-target="180" data-suffix="+">0</span>
+            <span class="font-mono text-[10px] tracking-widest text-slate-500 dark:text-slate-400 mt-2 uppercase">Active Molecules</span>
+          </div>
+          <div class="text-center flex flex-col">
+            <span class="stat-counter font-display text-4xl md:text-5xl font-bold tracking-tight text-secondary-500" data-target="24" data-suffix="B">0</span>
+            <span class="font-mono text-[10px] tracking-widest text-slate-500 dark:text-slate-400 mt-2 uppercase">Manufacturing Capacity</span>
+          </div>
+          <div class="text-center flex flex-col">
+            <span class="stat-counter font-display text-4xl md:text-5xl font-bold tracking-tight text-slate-900 dark:text-white" data-target="999" data-suffix="%">0</span>
+            <span class="font-mono text-[10px] tracking-widest text-slate-500 dark:text-slate-400 mt-2 uppercase">Compliance Audit Rate</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHY CHOOSE US (BENTO GRID) -->
+      <div class="max-w-7xl mx-auto px-6 py-24 scroll-reveal">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Scientific Superiority</span>
+          <h3 class="font-display font-bold text-3xl md:text-4xl text-slate-900 dark:text-white">Why Intercon Pharma Stands Out</h3>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">We combine Swiss scientific precision with robust industrial manufacturing to produce life-saving therapeutic solutions.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Card 1 -->
+          <div class="glass border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center text-primary-500 text-xl">
+              <i class="fa-solid fa-shield-virus"></i>
+            </div>
+            <h4 class="font-display font-semibold text-lg text-slate-900 dark:text-white">Zero-Defect Quality Control</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Stringent QA protocols validating purity, dissolution profile, and mechanical stability across all tablet and capsule batches.</p>
+          </div>
+          <!-- Card 2 -->
+          <div class="glass border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-accent-500/10 flex items-center justify-center text-accent-500 text-xl">
+              <i class="fa-solid fa-truck-ramp-box"></i>
+            </div>
+            <h4 class="font-display font-semibold text-lg text-slate-900 dark:text-white">Sterile Logistics Chain</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Integrated cold-chain packaging guaranteeing thermal stability during transport to over 45 international trade hubs.</p>
+          </div>
+          <!-- Card 3 -->
+          <div class="glass border border-slate-200 dark:border-slate-800 p-8 rounded-2xl flex flex-col gap-4 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1">
+            <div class="w-12 h-12 rounded-xl bg-secondary-500/10 flex items-center justify-center text-secondary-500 text-xl">
+              <i class="fa-solid fa-flask"></i>
+            </div>
+            <h4 class="font-display font-semibold text-lg text-slate-900 dark:text-white">Advanced Molecular R&D</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">Our advanced laboratories continuously discover and patent highly active ingredients (APIs) for public health protection.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOME CTA -->
+      <div class="max-w-7xl mx-auto px-6 pb-24 scroll-reveal">
+        <div class="relative rounded-3xl bg-gradient-to-tr from-primary-900 via-primary-700 to-slate-950 p-12 md:p-20 overflow-hidden shadow-2xl flex flex-col md:flex-row gap-12 items-center justify-between">
+          <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-accent-500/20 blur-3xl"></div>
+          <div class="relative z-10 max-w-xl">
+            <span class="font-mono text-xs tracking-widest text-accent-400 uppercase">Global Inquiries</span>
+            <h3 class="font-display font-bold text-3xl md:text-4xl text-white mt-3">Ready to Partner with a Global Pharmaceutical Leader?</h3>
+            <p class="text-slate-300 text-sm mt-3 leading-relaxed">Get in touch with our supply division in Karachi for robust trade alliances, contract manufacturing, or distribution licensing.</p>
+          </div>
+          <div class="relative z-10 flex flex-shrink-0">
+            <a href="#contact" class="px-8 py-4 bg-white hover:bg-slate-100 text-primary-900 font-semibold uppercase tracking-wider text-xs rounded-xl shadow-lg transition-all hover:-translate-y-0.5">
+              Initiate Partnership Inquiries <i class="fa-solid fa-arrow-right ml-2 text-sm"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 2: ABOUT ================= -->
+    <section id="page-about" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-6 flex flex-col gap-6">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Corporate Foundations</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white leading-tight">Elite Standard Pharma</h2>
+          <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+            Founded with the mission to provide safe, high-grade, and cost-effective pharmaceutical compounds to the global healthcare network, Intercon Pharma operates a state-of-the-art sterile manufacturing plant in Karachi, Pakistan.
+          </p>
+          <p class="text-slate-600 dark:text-slate-400 text-base leading-relaxed">
+            By prioritizing automated clean rooms, zero-contamination workflows, and highly meticulous batch inspections, we manufacture millions of tablets, sterile capsules, and clinical solutions.
+          </p>
+          <!-- Grid for Mission & Vision -->
+          <div class="grid md:grid-cols-2 gap-6 mt-4">
+            <div class="p-5 rounded-2xl glass border border-slate-200 dark:border-slate-800">
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-bullseye text-primary-500"></i> Our Mission</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">To engineered premium therapeutics that safe-guard health and enrich human life globally.</p>
+            </div>
+            <div class="p-5 rounded-2xl glass border border-slate-200 dark:border-slate-800">
+              <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-eye text-accent-500"></i> Our Vision</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">To be recognized as the pinnacle of quality and compliance in standard molecular pharmacology.</p>
+            </div>
+          </div>
+        </div>
+        <!-- Right side image grid -->
+        <div class="lg:col-span-6 relative">
+          <div class="aspect-video bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-2xl border border-white/20">
+            <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=800&q=80" alt="Advanced scientific glassware and laboratory equipment" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+          </div>
+          <!-- Grid overlay stats -->
+          <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="glass border border-slate-200 dark:border-slate-800 p-5 rounded-2xl text-center">
+              <span class="font-display text-2xl font-bold text-primary-500">WHO-GMP</span>
+              <p class="text-[10px] uppercase font-mono tracking-wider text-slate-500 mt-1">Certified Practice</p>
+            </div>
+            <div class="glass border border-slate-200 dark:border-slate-800 p-5 rounded-2xl text-center">
+              <span class="font-display text-2xl font-bold text-secondary-500">DRAP</span>
+              <p class="text-[10px] uppercase font-mono tracking-wider text-slate-500 mt-1">Regulatory Approvals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABOUT TIMELINE -->
+      <div class="bg-white dark:bg-slate-900 border-y border-slate-200 dark:border-slate-800 py-24 scroll-reveal">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+            <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Chronology of Success</span>
+            <h3 class="font-display font-bold text-3xl text-slate-900 dark:text-white">Our Corporate History</h3>
+          </div>
+          <div class="relative border-l border-slate-200 dark:border-slate-800 ml-4 md:ml-32 pl-8 space-y-12">
+            <!-- Timeline Item 1 -->
+            <div class="relative">
+              <span class="absolute -left-12 top-1 w-8 h-8 rounded-full bg-primary-500 border-4 border-white dark:border-slate-900 flex items-center justify-center text-xs text-white"><i class="fa-solid fa-flag"></i></span>
+              <span class="font-mono text-xs font-bold text-primary-500">2014 • Foundation</span>
+              <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">Inauguration of Intercon Pharma</h4>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 max-w-2xl">Established our manufacturing headquarters in Karachi, setting up state-of-the-art sterile capsule and oral solid formulation facilities.</p>
+            </div>
+            <!-- Timeline Item 2 -->
+            <div class="relative">
+              <span class="absolute -left-12 top-1 w-8 h-8 rounded-full bg-accent-500 border-4 border-white dark:border-slate-900 flex items-center justify-center text-xs text-white"><i class="fa-solid fa-shield-halved"></i></span>
+              <span class="font-mono text-xs font-bold text-accent-500">2018 • Certification</span>
+              <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">WHO-GMP & DRAP Regulatory Clearance</h4>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 max-w-2xl">Secured rigorous pharmaceutical manufacturing compliance standards certifying premium international trade practices.</p>
+            </div>
+            <!-- Timeline Item 3 -->
+            <div class="relative">
+              <span class="absolute -left-12 top-1 w-8 h-8 rounded-full bg-secondary-500 border-4 border-white dark:border-slate-900 flex items-center justify-center text-xs text-white"><i class="fa-solid fa-globe"></i></span>
+              <span class="font-mono text-xs font-bold text-secondary-500">2022 • Expansion</span>
+              <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white mt-1">Active Molecular Research & Global Trade</h4>
+              <p class="text-slate-500 dark:text-slate-400 text-sm mt-1 max-w-2xl">Scaled export trade lanes across Asia, the Middle East, and Africa, distributing high-grade injectables and generic therapeutics globally.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 3: SERVICES ================= -->
+    <section id="page-services" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Therapeutic Capabilities</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Our Specialized Core Services</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Providing robust end-to-end pharmaceutical engineering, compliant packaging, and logistics under sterile conditions.</p>
+        </div>
+        <div id="services-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Dynamic rendering via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 4: PRODUCTS ================= -->
+    <section id="page-products" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 mb-12">
+          <div class="flex flex-col gap-3">
+            <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Product Catalog</span>
+            <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Certified Therapeutics</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-sm">Use filters or search bar to discover pharmaceutical formulations developed with surgical excellence.</p>
+          </div>
+          <!-- Live Search Bar -->
+          <div class="relative w-full lg:w-80">
+            <input type="text" id="product-search" oninput="filterProducts()" placeholder="Search active molecules..." class="w-full px-5 py-3.5 pl-12 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none focus:border-primary-500 text-sm transition-colors text-slate-800 dark:text-white">
+            <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          </div>
+        </div>
+
+        <!-- Filter Categories -->
+        <div class="flex flex-wrap gap-2.5 mb-10 border-b border-slate-200 dark:border-slate-800 pb-6" id="product-category-tabs">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Products Grid -->
+        <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <!-- Dynamic rendering via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 5: RESEARCH & INNOVATION ================= -->
+    <section id="page-research" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Next-Generation Medicine</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Research & Applied Innovation</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Discover how our state-of-the-art sterile laboratories and molecular synthesis pipelines formulate advanced clinical options.</p>
+        </div>
+
+        <!-- Laboratory highlights -->
+        <div class="grid lg:grid-cols-2 gap-12 items-center mb-24">
+          <div class="aspect-video bg-slate-200 dark:bg-slate-800 rounded-3xl overflow-hidden shadow-xl border border-white/10">
+            <img src="public/Laboratories.jfif" alt="Laboratory microscope and advanced scientific equipment" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+          </div>
+          <div class="flex flex-col gap-6">
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">High-Throughput Synthesis Laboratories</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+              Our research team in Karachi operates advanced liquid chromatography platforms, gas spectrometers, and automated formulation synthesis engines that accelerate pre-clinical bio-equivalence trials.
+            </p>
+            <div class="grid grid-cols-2 gap-6 mt-2">
+              <div class="flex flex-col gap-1 border-l-2 border-primary-500 pl-4">
+                <span class="font-display font-bold text-xl text-slate-900 dark:text-white">ISO 9001</span>
+                <span class="text-xs text-slate-500 uppercase tracking-widest font-mono">Laboratory Standards</span>
+              </div>
+              <div class="flex flex-col gap-1 border-l-2 border-accent-500 pl-4">
+                <span class="font-display font-bold text-xl text-slate-900 dark:text-white">Class A</span>
+                <span class="text-xs text-slate-500 uppercase tracking-widest font-mono">Aseptic Hood Cleanliness</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Scientific process timeline -->
+        <div class="border-t border-slate-200 dark:border-slate-800 pt-20">
+          <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white text-center mb-12">Our 4-Stage Formulation Pipeline</h3>
+          <div class="grid md:grid-cols-4 gap-8">
+            <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 relative">
+              <span class="absolute top-4 right-4 font-mono font-bold text-slate-200 dark:text-slate-800 text-4xl">01</span>
+              <h4 class="font-display font-bold text-md text-slate-900 dark:text-white mt-4">API Discovery</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">High-purity sourcing and validation of Active Pharmaceutical Ingredients to ensure premium raw molecular efficacy.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 relative">
+              <span class="absolute top-4 right-4 font-mono font-bold text-slate-200 dark:text-slate-800 text-4xl">02</span>
+              <h4 class="font-display font-bold text-md text-slate-900 dark:text-white mt-4">Bio-Equivalence</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Rigorous molecular dissolution rate testing comparing therapeutic behaviors with global brand baselines.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 relative">
+              <span class="absolute top-4 right-4 font-mono font-bold text-slate-200 dark:text-slate-800 text-4xl">03</span>
+              <h4 class="font-display font-bold text-md text-slate-900 dark:text-white mt-4">Aseptic Scale-up</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Translating clinical formulas into high-speed clean-room automated batch production lines without contamination.</p>
+            </div>
+            <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 relative">
+              <span class="absolute top-4 right-4 font-mono font-bold text-slate-200 dark:text-slate-800 text-4xl">04</span>
+              <h4 class="font-display font-bold text-md text-slate-900 dark:text-white mt-4">QA Compliance Audit</h4>
+              <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Final regulatory audits verifying stability index, sterility, and batch uniformity before international export.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 6: QUALITY ASSURANCE ================= -->
+    <section id="page-quality" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Strict Operational Standards</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Quality Assurance & Compliance</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">We strictly enforce global manufacturing safety standards across our sterile logistics networks and clean facilities.</p>
+        </div>
+
+        <!-- Interactive Infographic Grid -->
+        <div class="grid lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-5 flex flex-col gap-6">
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white leading-tight">Zero-Contamination Workflow Process</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
+              Every phase of tablet synthesis, clinical solution liquid filling, and secondary packaging is tightly insulated against external air currents using advanced terminal HEPA filters and computerized atmospheric sensors.
+            </p>
+            <div class="flex flex-col gap-4 mt-2">
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-md flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">ISO 14001 Environmental Standard</h4>
+                  <p class="text-xs text-slate-500">Low-emission and waste-optimized safe chemical processing.</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-md flex-shrink-0"><i class="fa-solid fa-circle-check"></i></div>
+                <div>
+                  <h4 class="font-display font-bold text-sm text-slate-900 dark:text-white">WHO Good Manufacturing Practices</h4>
+                  <p class="text-xs text-slate-500">Global audit validation covering clean utilities and employee safety.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Interactive Infographic Flow SVG/HTML -->
+          <div class="lg:col-span-7 p-6 md:p-8 rounded-3xl glass border border-slate-200 dark:border-slate-800 flex flex-col gap-4 shadow-xl">
+            <h4 class="font-mono text-xs tracking-widest text-slate-500 uppercase mb-4">Quality Flow Infographic</h4>
+            <div class="flex flex-col md:flex-row items-center justify-between gap-4 relative">
+              <div class="flex flex-col items-center text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 w-full md:w-1/3 hover:border-emerald-500 transition-colors group cursor-pointer">
+                <i class="fa-solid fa-filter text-2xl text-primary-500 group-hover:text-emerald-500 transition-colors"></i>
+                <h5 class="font-bold text-xs text-slate-900 dark:text-white mt-3">1. Raw API Test</h5>
+                <p class="text-[10px] text-slate-500 mt-1">Chemical purity verification under infrared spectroscopy.</p>
+              </div>
+              <div class="hidden md:block text-slate-300 dark:text-slate-800"><i class="fa-solid fa-arrow-right text-lg"></i></div>
+              <div class="flex flex-col items-center text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 w-full md:w-1/3 hover:border-emerald-500 transition-colors group cursor-pointer">
+                <i class="fa-solid fa-wind text-2xl text-accent-500 group-hover:text-emerald-500 transition-colors"></i>
+                <h5 class="font-bold text-xs text-slate-900 dark:text-white mt-3">2. Sterile Processing</h5>
+                <p class="text-[10px] text-slate-500 mt-1">Class A laminar air-flow formulation and packaging.</p>
+              </div>
+              <div class="hidden md:block text-slate-300 dark:text-slate-800"><i class="fa-solid fa-arrow-right text-lg"></i></div>
+              <div class="flex flex-col items-center text-center p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 w-full md:w-1/3 hover:border-emerald-500 transition-colors group cursor-pointer">
+                <i class="fa-solid fa-stamp text-2xl text-secondary-500 group-hover:text-emerald-500 transition-colors"></i>
+                <h5 class="font-bold text-xs text-slate-900 dark:text-white mt-3">3. Final Release</h5>
+                <p class="text-[10px] text-slate-500 mt-1">Batch clearance verification and registration stamps.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 7: CAREERS ================= -->
+    <section id="page-careers" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Human Intelligence</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Scientific Minds & Global Careers</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Join a stellar pharmaceutical research family and discover professional growth inside premium testing laboratories in Karachi.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-12 items-start">
+          <!-- Job Openings list -->
+          <div class="lg:col-span-7 flex flex-col gap-6">
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white mb-2">Open Positions</h3>
+            <div id="careers-list" class="flex flex-col gap-4">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+          <!-- Apply Form -->
+          <div class="lg:col-span-5 p-8 rounded-3xl glass border border-slate-200 dark:border-slate-800 shadow-xl">
+            <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">Apply for Vacancy</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Provide your details to initiate pre-screen reviews.</p>
+            
+            <form id="careers-form" onsubmit="submitCareerForm(event)" class="flex flex-col gap-4 mt-6">
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Full Name</label>
+                <input type="text" id="career-name" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Email Address</label>
+                <input type="email" id="career-email" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Target Position</label>
+                <select id="career-position" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+                  <option value="">Choose Position</option>
+                  <option value="Senior Formulation Scientist">Senior Formulation Scientist</option>
+                  <option value="Quality Assurance Auditor">Quality Assurance Auditor</option>
+                  <option value="Sterile Packing Executive">Sterile Packing Executive</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Cover Letter</label>
+                <textarea id="career-cover" rows="3" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors"></textarea>
+              </div>
+              <button type="submit" class="w-full py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold rounded-xl text-xs uppercase tracking-wider transition-all cursor-pointer">Submit Application</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 8: NEWS & INSIGHTS ================= -->
+    <section id="page-news" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Scientific Journalism</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">News & Scientific Insights</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Read clinical analysis, pharmaceutical export breakthroughs, and facility updates from our کراچی offices.</p>
+        </div>
+
+        <div id="news-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+          <!-- Rendered dynamically -->
+        </div>
+
+        <!-- Newsletter box -->
+        <div class="rounded-3xl bg-slate-100 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-800/50 p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 max-w-4xl mx-auto">
+          <div>
+            <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">Subscribe to Insights</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Get WHO regulation updates and product launches delivered directly to your inbox.</p>
+          </div>
+          <form onsubmit="submitNewsletter(event)" class="flex gap-2 w-full md:w-auto">
+            <input type="email" id="news-email" placeholder="email@address.com" required class="px-4 py-3.5 rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 outline-none focus:border-primary-500 text-sm text-slate-800 dark:text-white w-full md:w-64 transition-colors">
+            <button type="submit" class="px-6 py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all flex-shrink-0 cursor-pointer">Join</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 9: CONTACT ================= -->
+    <section id="page-contact" class="page-view hidden transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+        <div class="text-center max-w-xl mx-auto mb-16 flex flex-col gap-3">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Trade Inquiries</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Get in Touch with Us</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Our logistics and corporate team is standing by to assist with global distribution agreements.</p>
+        </div>
+
+        <div class="grid lg:grid-cols-12 gap-12 items-start mb-24">
+          <!-- Form -->
+          <div class="lg:col-span-7 p-8 rounded-3xl glass border border-slate-200 dark:border-slate-800 shadow-xl">
+            <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white">Interactive Partner Inquiry</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Complete the secure form to route requests to appropriate divisions.</p>
+            <form id="contact-form" onsubmit="submitContact(event)" class="flex flex-col gap-4 mt-6">
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Contact Person Name</label>
+                  <input type="text" id="contact-name" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Business Email Address</label>
+                  <input type="email" id="contact-email" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+                </div>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Subject</label>
+                <input type="text" id="contact-subject" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors">
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="font-mono text-[10px] uppercase tracking-wider text-slate-500">Inquiry Specifications</label>
+                <textarea id="contact-msg" rows="4" required class="px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-sm outline-none focus:border-primary-500 text-slate-900 dark:text-white transition-colors"></textarea>
+              </div>
+              <button type="submit" class="py-3.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">Send Inquiry</button>
+            </form>
+          </div>
+
+          <!-- Quick Details / Maps -->
+          <div class="lg:col-span-5 flex flex-col gap-8">
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex flex-col gap-4">
+              <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">Karachi Corporate Hub</h3>
+              <div class="flex flex-col gap-3 text-sm text-slate-500 dark:text-slate-400">
+                <div class="flex gap-3 items-start"><i class="fa-solid fa-map-location-dot text-primary-500 mt-1"></i> <span>Flat No 01, First Floor, Madhu Place, Sadar, Karachi, Pakistan</span></div>
+                <div class="flex gap-3 items-center"><i class="fa-solid fa-phone text-accent-500"></i> <span>Tel: 4578457 | Fax: 4575876</span></div>
+                <div class="flex gap-3 items-center"><i class="fa-solid fa-envelope text-secondary-500"></i> <span>intercon@atomicmail.io</span></div>
+              </div>
+            </div>
+
+            <!-- Google Maps Karachi Embed -->
+            <div class="h-64 rounded-3xl overflow-hidden border border-slate-200 dark:border-slate-800 shadow-lg">
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3618.1368940455827!2d67.01633511447814!3d24.8514101517036!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06112d0395%3A0xb56300454374b8!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1625620000000!5m2!1sen!2s" class="w-full h-full border-0 select-none pointer-events-none" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+          </div>
+        </div>
+
+        <!-- ACCORDION FAQ -->
+        <div class="border-t border-slate-200 dark:border-slate-800 pt-20">
+          <div class="text-center max-w-xl mx-auto mb-12 flex flex-col gap-3">
+            <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Clear Communication</span>
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white">Frequently Asked Inquiries</h3>
+          </div>
+          <div id="faqs-accordion" class="max-w-3xl mx-auto flex flex-col gap-4">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= PAGE 10: PRIVACY & TERMS ================= -->
+    <section id="page-legal" class="page-view hidden transition-all duration-300">
+      <div class="max-w-4xl mx-auto px-6 py-12 md:py-24 flex flex-col gap-8">
+        <div class="flex flex-col gap-3 border-b border-slate-200 dark:border-slate-800 pb-6">
+          <span class="font-mono text-xs tracking-widest text-primary-500 uppercase">Regulatory Disclosure</span>
+          <h2 class="font-display font-bold text-3xl md:text-5xl text-slate-900 dark:text-white">Privacy, Terms & Legal Compliance</h2>
+          <p class="text-slate-500 dark:text-slate-400 text-sm">Please inspect our legal frameworks outlining medical storage conditions, product liability disclosures, and intellectual data collection rules.</p>
+        </div>
+
+        <div class="flex flex-col gap-6 text-sm text-slate-600 dark:text-slate-400 leading-relaxed">
+          <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">1. Formulation Disclaimer & Clinical Directives</h3>
+          <p>
+            Any therapeutic compounds, tablet specifications, packaging diagrams, and molecular properties outlined within our dynamic product catalog are strictly compiled under the direct guidelines of WHO-GMP and ISO compliance. Intercon Pharma serves standard trade distributors only; direct medicine consumption should be handled in accordance with local drug registration parameters.
+          </p>
+
+          <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">2. Privacy & Secure Connection Framework</h3>
+          <p>
+            We strictly protect the privacy of corporate client requests, application forms, and attachments routed to our Karachi secure storage servers. This portal enforces complete end-to-end socket connections; we never sell, share, or disclose client names, emails, or trade formulations to any external market entity.
+          </p>
+
+          <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">3. Intellectual Property Rights</h3>
+          <p>
+            All brand concepts, patentable molecular compositions, clinical reports, high-speed packing systems, and design aesthetics depicted inside this source file belong to Intercon Pharma. Unauthorized duplication, brand plagiarism, or trademark extraction is strictly subject to legal compliance protocols.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- MODERN FOOTER -->
+  <footer class="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 pt-16 pb-8 transition-colors duration-300">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+      <!-- Info Column -->
+      <div class="col-span-2 md:col-span-1 flex flex-col gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center shadow-md">
+            <i class="fa-solid fa-circle-nodes text-white text-sm"></i>
+          </div>
+          <span class="font-display font-bold text-md text-slate-900 dark:text-white tracking-wider uppercase">Intercon Pharma</span>
+        </div>
+        <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">
+          High-grade WHO-GMP certified clinical therapeutics formulated with state-of-the-art sterile technologies in Karachi, Pakistan.
+        </p>
+        <!-- Socials -->
+        <div class="flex gap-3 text-slate-400 mt-2">
+          <a href="#" class="hover:text-primary-500 transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+          <a href="#" class="hover:text-primary-500 transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
+          <a href="#" class="hover:text-primary-500 transition-colors"><i class="fa-brands fa-youtube text-lg"></i></a>
+        </div>
+      </div>
+
+      <!-- Quick Nav -->
+      <div class="flex flex-col gap-4">
+        <span class="font-display font-bold text-xs uppercase tracking-widest text-slate-900 dark:text-white">Corporate Links</span>
+        <div class="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <a href="#about" class="hover:text-primary-500 transition-colors">Corporate History</a>
+          <a href="#services" class="hover:text-primary-500 transition-colors">Our Services</a>
+          <a href="#products" class="hover:text-primary-500 transition-colors">Products Catalog</a>
+          <a href="#careers" class="hover:text-primary-500 transition-colors">Explore Careers</a>
+        </div>
+      </div>
+
+      <!-- Compliance -->
+      <div class="flex flex-col gap-4">
+        <span class="font-display font-bold text-xs uppercase tracking-widest text-slate-900 dark:text-white">Global Compliance</span>
+        <div class="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <a href="#quality" class="hover:text-primary-500 transition-colors">WHO-GMP Standard</a>
+          <a href="#research" class="hover:text-primary-500 transition-colors">Molecular Research</a>
+          <a href="#legal" class="hover:text-primary-500 transition-colors">Privacy & Disclaimer</a>
+        </div>
+      </div>
+
+      <!-- Karachi Hub details -->
+      <div class="flex flex-col gap-4">
+        <span class="font-display font-bold text-xs uppercase tracking-widest text-slate-900 dark:text-white">Karachi, Pakistan</span>
+        <div class="flex flex-col gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <span>Flat No 01, First Floor, Madhu Place, Sadar, Karachi</span>
+          <span>Tel: 4578457 | Fax: 4575876</span>
+          <span>Email: intercon@atomicmail.io</span>
+          <span class="flex items-center gap-2 text-[10px] uppercase font-mono tracking-wider text-emerald-500"><i class="fa-solid fa-circle text-[6px]"></i> Hub Online</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom footer details -->
+    <div class="max-w-7xl mx-auto px-6 border-t border-slate-200/50 dark:border-slate-800/50 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+      <p>© 2019 Intercon Pharma. All rights reserved. Precision Pharmaceutical Engineering.</p>
+      <div class="flex gap-4">
+        <a href="#legal" class="hover:text-primary-500 transition-colors">Terms of Use</a>
+        <a href="#legal" class="hover:text-primary-500 transition-colors">Cookie Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- DYNAMIC CORE JAVASCRIPT SYSTEM -->
+  <script>
+    // ================= DATA OBJECTS =================
+    const services = [
+      { id: 'mfg', icon: 'fa-cubes-stacked', title: 'WHO-GMP Manufacturing', desc: 'Class A aseptic environment equipped with high-speed automated solid dose compaction tables.', details: 'Formulating robust tablet and capsule matrices strictly conforming to WHO dissolution baselines.' },
+      { id: 'rnd', icon: 'fa-flask-vial', title: 'Molecular Formulation R&D', desc: 'Equipped with infrared spectrometry and liquid chromatography to analyze pharmaceutical bio-equivalence.', details: 'Active development of highly stable and water-soluble drug delivery compounds.' },
+      { id: 'pkg', icon: 'fa-box-open', title: 'Sterile Blister Packaging', desc: 'Primary packaging insulated with clean atmosphere nitrogen flush to shield compounds from moisture.', details: 'Premium Alu-Alu and PVC-PVDC packing maintaining shelf-life integrity during global transit.' },
+      { id: 'qa', icon: 'fa-clipboard-check', title: 'Quality Assurance Testing', desc: 'Meticulous inspection of tablet density, friability, hardness index, and active dosage concentration.', details: 'Ensuring zero-defect batches validated against stringent regional pharmacopoeia regulations.' },
+      { id: 'dist', icon: 'fa-truck-moving', title: 'Cold-Chain Logistics', desc: 'Secure temperature-controlled transport infrastructure safely distributing life-critical medicines.', details: 'Real-time GPS tracking and atmospheric logging guaranteeing vaccine and injectable viability.' },
+      { id: 'reg', icon: 'fa-file-signature', title: 'DRAP Regulatory Compliance', desc: 'Assistance compiling rigorous medical dossiers, certificates, and drug registration documentation.', details: 'Smooth administrative authorization pathways through the Drug Regulatory Authority of Pakistan.' }
+    ];
+
+    const products = [
+      { id: 'p1', title: 'Cardioprin 75mg', cat: 'tablets', form: 'Enteric Coated Tablet', desc: 'Premium antiplatelet formulation designed for daily cardiovascular protection and clot prevention.', details: 'Packaging: Alu-Alu Blister Pack of 30s. Store under dry atmospheric conditions.', img: 'public/Cardioprin.jfif' },
+      { id: 'p2', title: 'Intermox 500mg', cat: 'capsules', form: 'Hard Gelatin Capsule', desc: 'Broad-spectrum amoxicillin antibiotic capsule ensuring maximum bio-availability and fast systemic absorption.', details: 'Packaging: Blister Pack of 20s. Prescribed for localized clinical bacteriological infections.', img: 'public/Intermox.jfif' },
+      { id: 'p3', title: 'Stericef 1g', cat: 'injectables', form: 'Sterile Powder for Injection', desc: 'Ceftriaxone sterile sodium powder for IM/IV reconstitution, processed in our Karachi Class A aseptic unit.', details: 'Packaging: Glass Vial with sterile water ampoule. Store between 2°C and 8°C under secure supervision.', img: 'public/Stericef.jfif' },
+      { id: 'p4', title: 'Tussicon Liquid', cat: 'syrups', form: 'Oral Antihistamine Liquid', desc: 'Palatable sugar-free liquid oral suspension for respiratory cough and bronchial mucosal congestion relief.', details: 'Packaging: Amber PET bottle of 120ml. High stability compound formulated for child and adult care.', img: 'public/tussicon.jfif' },
+      { id: 'p5', title: 'Ostecal-D Premium', cat: 'supplements', form: 'Nutritional Coated Tablet', desc: 'Concentrated calcium carbonate + Vitamin D3 therapeutic support supporting bone density and mineral synthesis.', details: 'Packaging: HDPE sterile bottle of 60s. Formulated with high-grade micronized ingredients.', img: 'public/Ostecal.jfif' },
+      { id: 'p6', title: 'Congesil Rapid 500mg', cat: 'otc', form: 'Film-Coated Tablet', desc: 'Fast-acting analgesic and paracetamol antipyretic compound formulated for quick fever and systemic pain relief.', details: 'Packaging: Clinical blister pack of 100s. Complies with global drug safety dosage margins.', img: 'public/Congesil.jfif' }
+    ];
+
+    const careers = [
+      { title: 'Senior Formulation Scientist', dept: 'R&D Laboratories', desc: 'Lead formulation trials, dissolution profiling, and bio-equivalence verification of generic solid oral tablets in Karachi.' },
+      { title: 'Quality Assurance Auditor', dept: 'Quality Compliance', desc: 'Conduct batch audit reviews, inspect clean room logs, and maintain strict ISO and DRAP operational standards.' },
+      { title: 'Sterile Packing Executive', dept: 'Packaging Division', desc: 'Supervise automated thermoforming blister packing systems and ensure seamless sterile container nitrogen flushing.' }
+    ];
+
+    const news = [
+      { title: 'Intercon Expand Sterile Injection Facility in Karachi', date: 'June 18, 2026', cat: 'Corporate News', desc: 'We have finalized construction on a multi-million dollar Class A aseptic laboratory unit equipped with Swiss automated robotic filling tables.', img: 'public/Laboratories.jfif' },
+      { title: 'The Impact of Bio-equivalence Studies on Solid Doses', date: 'May 22, 2026', cat: 'Scientific Insight', desc: 'A detailed study from our R&D pharmacologists showing how tablet hardness optimization directly controls active molecule dissolution rates.', img: 'public/Bio.jfif' },
+      { title: 'Securing Vaccine Stability via Cold-Chain Logistics', date: 'April 05, 2026', cat: 'Logistics update', desc: 'How Intercon Pharma uses real-time atmospheric telemetric recorders to safeguard vaccine potency across export routes.', img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=400&q=80' }
+    ];
+
+    const faqs = [
+      { q: 'Where are Intercon Pharma facilities situated?', a: 'Our primary, state-of-the-art sterile manufacturing laboratories, solid oral dosage units, and compliance administrative offices are centralized in Karachi, Pakistan.' },
+      { q: 'Are Intercon products approved by the DRAP?', a: 'Yes, every tablet, sterile capsule, and liquid formulation in our database is strictly registered and authorized by the Drug Regulatory Authority of Pakistan (DRAP).' },
+      { q: 'Can we request contract manufacturing or custom private labeling?', a: 'Absolutely. We provide end-to-end custom formulation, molecular synthesis scale-up, custom Alu-Alu packing, and regulatory support for global pharmaceutical brands.' }
+    ];
+
+    // ================= INITIALIZATION & RENDERING =================
+    document.addEventListener('DOMContentLoaded', () => {
+      renderServices();
+      renderProducts();
+      renderCareers();
+      renderNews();
+      renderFaqs();
+      
+      // Init Navigation Hash Check
+      const initHash = window.location.hash.replace('#', '') || 'home';
+      navigateTo(initHash);
+    });
+
+    // ================= DYNAMIC RENDERING FUNCTIONS =================
+    function renderServices() {
+      const parent = document.getElementById('services-grid');
+      parent.innerHTML = services.map(s => `
+        <div class="glass p-8 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 group flex flex-col gap-4">
+          <div class="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center text-primary-500 text-xl group-hover:bg-primary-500 group-hover:text-white transition-all">
+            <i class="fa-solid ${s.icon}"></i>
+          </div>
+          <h3 class="font-display font-semibold text-lg text-slate-900 dark:text-white">${s.title}</h3>
+          <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed">${s.desc}</p>
+          <button onclick="openServiceDetail('${s.id}')" class="text-primary-500 font-mono text-xs font-bold text-left hover:text-primary-600 transition-colors mt-auto cursor-pointer">
+            View Technical Spec <i class="fa-solid fa-arrow-right-long ml-1"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function renderProducts() {
+      // Categories Tabs
+      const categories = ['all', 'tablets', 'capsules', 'injectables', 'syrups', 'supplements', 'otc'];
+      const tabsParent = document.getElementById('product-category-tabs');
+      tabsParent.innerHTML = categories.map(cat => `
+        <button onclick="selectProductCategory('${cat}')" id="cat-tab-${cat}" class="px-5 py-2.5 rounded-xl text-xs font-semibold uppercase tracking-wider border border-slate-200 dark:border-slate-800 hover:border-primary-500/50 hover:bg-slate-100 dark:hover:bg-slate-900 transition-all text-slate-600 dark:text-slate-400 cursor-pointer">
+          ${cat}
+        </button>
+      `).join('');
+
+      selectProductCategory('all');
+    }
+
+    function selectProductCategory(category) {
+      // Highlight active tab
+      document.querySelectorAll('#product-category-tabs button').forEach(btn => {
+        btn.classList.remove('bg-primary-500', 'text-white', 'border-primary-500');
+        btn.classList.add('text-slate-600', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-800');
+      });
+      const activeBtn = document.getElementById(`cat-tab-${category}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('text-slate-600', 'dark:text-slate-400', 'border-slate-200', 'dark:border-slate-800');
+        activeBtn.classList.add('bg-primary-500', 'text-white', 'border-primary-500');
+      }
+
+      window.activeCategory = category;
+      filterProducts();
+    }
+
+    function filterProducts() {
+      const search = document.getElementById('product-search').value.toLowerCase();
+      const parent = document.getElementById('products-grid');
+      const category = window.activeCategory || 'all';
+
+      const filtered = products.filter(p => {
+        const matchesCat = category === 'all' || p.cat === category;
+        const matchesSearch = p.title.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search) || p.form.toLowerCase().includes(search);
+        return matchesCat && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        parent.innerHTML = `
+          <div class="col-span-full py-12 text-center text-slate-400">
+            <i class="fa-solid fa-face-frown text-3xl mb-3"></i>
+            <p class="font-medium text-sm">No therapeutics matches your search criteria.</p>
+          </div>
+        `;
+        return;
+      }
+
+      parent.innerHTML = filtered.map(p => `
+        <div class="glass rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all hover:-translate-y-1 group flex flex-col">
+          <div class="h-48 bg-slate-100 dark:bg-slate-900 overflow-hidden relative">
+            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover select-none group-hover:scale-105 transition-transform duration-500" referrerPolicy="no-referrer">
+            <span class="absolute top-4 left-4 font-mono text-[9px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full bg-slate-950/80 text-accent-500 border border-slate-800/80 backdrop-blur-sm">${p.form}</span>
+          </div>
+          <div class="p-6 flex flex-col flex-grow gap-3">
+            <h3 class="font-display font-bold text-lg text-slate-900 dark:text-white">${p.title}</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed line-clamp-3">${p.desc}</p>
+            <button onclick="openProductDetail('${p.id}')" class="w-full py-3 bg-slate-100 dark:bg-slate-800 hover:bg-primary-500 hover:text-white text-slate-700 dark:text-slate-300 font-semibold text-xs rounded-xl uppercase tracking-wider transition-all mt-auto cursor-pointer">
+              Technical Specifications
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderCareers() {
+      const parent = document.getElementById('careers-list');
+      parent.innerHTML = careers.map(c => `
+        <div class="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <span class="font-mono text-[10px] uppercase font-bold text-primary-500">${c.dept}</span>
+            <h4 class="font-display font-bold text-md text-slate-900 dark:text-white mt-1">${c.title}</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mt-1.5 max-w-lg leading-relaxed">${c.desc}</p>
+          </div>
+          <button onclick="prefillCareer('${c.title}')" class="px-5 py-2.5 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-xs uppercase tracking-wider rounded-xl transition-all cursor-pointer">
+            Apply Now
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function renderNews() {
+      const parent = document.getElementById('news-grid');
+      parent.innerHTML = news.map(n => `
+        <div class="glass rounded-3xl border border-slate-200 dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col">
+          <div class="h-44 bg-slate-100 dark:bg-slate-900 overflow-hidden relative">
+            <img src="${n.img}" alt="${n.title}" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+            <span class="absolute top-4 left-4 font-mono text-[9px] uppercase tracking-widest font-semibold px-2.5 py-1 rounded-full bg-slate-950/80 text-primary-400 border border-slate-800/80">${n.cat}</span>
+          </div>
+          <div class="p-6 flex flex-col flex-grow gap-3">
+            <span class="font-mono text-[10px] text-slate-400">${n.date}</span>
+            <h3 class="font-display font-bold text-md text-slate-900 dark:text-white leading-snug">${n.title}</h3>
+            <p class="text-slate-500 dark:text-slate-400 text-xs leading-relaxed line-clamp-3">${n.desc}</p>
+            <button onclick="openNewsDetail('${n.title}', '${n.date}', '${n.cat}', '${n.desc}', '${n.img}')" class="text-primary-500 font-mono text-xs font-bold text-left hover:text-primary-600 mt-auto cursor-pointer">
+              Read Entire Article <i class="fa-solid fa-arrow-right-long ml-1"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderFaqs() {
+      const parent = document.getElementById('faqs-accordion');
+      parent.innerHTML = faqs.map((f, index) => `
+        <div class="glass border border-slate-200 dark:border-slate-800 rounded-2xl overflow-hidden transition-all">
+          <button onclick="toggleFaq(${index})" class="w-full px-6 py-5 flex items-center justify-between text-left font-display font-semibold text-sm text-slate-900 dark:text-white outline-none cursor-pointer">
+            <span>${f.q}</span>
+            <i class="fa-solid fa-chevron-down text-xs text-slate-400 transition-transform duration-300" id="faq-chevron-${index}"></i>
+          </button>
+          <div id="faq-ans-${index}" class="px-6 py-0 max-h-0 overflow-hidden transition-all duration-300">
+            <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed pb-5 border-t border-slate-100 dark:border-slate-800/50 pt-3">${f.a}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ================= CLIENT-SIDE ROUTING ENGINE =================
+    window.addEventListener('hashchange', () => {
+      const hash = window.location.hash.replace('#', '') || 'home';
+      navigateTo(hash);
+    });
+
+    function navigateTo(pageId) {
+      const validPages = ['home', 'about', 'services', 'products', 'research', 'quality', 'careers', 'news', 'contact', 'legal'];
+      if (!validPages.includes(pageId)) pageId = 'home';
+
+      // Hide all pages, show target
+      document.querySelectorAll('.page-view').forEach(view => {
+        view.classList.add('hidden', 'opacity-0', 'translate-y-4');
+      });
+      const target = document.getElementById(`page-${pageId}`);
+      if (target) {
+        target.classList.remove('hidden');
+        // Force Reflow
+        void target.offsetWidth;
+        target.classList.remove('opacity-0', 'translate-y-4');
+        target.classList.add('opacity-100', 'translate-y-0');
+      }
+
+      // Highlight Header Nav Links
+      document.querySelectorAll('.nav-link').forEach(link => {
+        const href = link.getAttribute('href');
+        const indicator = link.querySelector('.nav-indicator');
+        if (href === `#${pageId}`) {
+          link.classList.add('text-primary-500', 'font-bold');
+          link.classList.remove('text-slate-600', 'dark:text-slate-300');
+          if (indicator) indicator.classList.remove('scale-x-0');
+        } else {
+          link.classList.remove('text-primary-500', 'font-bold');
+          link.classList.add('text-slate-600', 'dark:text-slate-300');
+          if (indicator) indicator.classList.add('scale-x-0');
+        }
+      });
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Trigger scroll reveals
+      setTimeout(triggerScrollReveal, 100);
+    }
+
+    function toggleMobileMenu() {
+      const drawer = document.getElementById('mobile-menu');
+      drawer.classList.toggle('translate-x-full');
+    }
+
+    // ================= SCROLL REVEAL OBSERVER =================
+    function triggerScrollReveal() {
+      const reveals = document.querySelectorAll('.scroll-reveal');
+      reveals.forEach(el => {
+        const windowHeight = window.innerHeight;
+        const elementTop = el.getBoundingClientRect().top;
+        if (elementTop < windowHeight - 80) {
+          el.classList.add('revealed');
+        }
+      });
+
+      // Header scrolled glass transition
+      const header = document.querySelector('header');
+      if (header) {
+        if (window.scrollY > 20) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      }
+    }
+    window.addEventListener('scroll', triggerScrollReveal);
+
+    // ================= STATIC STATS NUMBER ANIMATOR =================
+    function animateStatsCounters() {
+      const counters = document.querySelectorAll('.stat-counter');
+      counters.forEach(counter => {
+        if (counter.classList.contains('counted')) return;
+        counter.classList.add('counted');
+        
+        const target = parseInt(counter.getAttribute('data-target'));
+        const suffix = counter.getAttribute('data-suffix') || '';
+        const duration = 1200; // ms
+        const steps = 40;
+        const stepTime = duration / steps;
+        const valStep = target / steps;
+        let cur = 0;
+
+        const timer = setInterval(() => {
+          cur += valStep;
+          if (cur >= target) {
+            clearInterval(timer);
+            counter.textContent = target + suffix;
+          } else {
+            counter.textContent = Math.floor(cur) + suffix;
+          }
+        }, stepTime);
+      });
+    }
+
+    // Stats visibility observer
+    const statsObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          animateStatsCounters();
+        }
+      });
+    }, { threshold: 0.1 });
+    statsObserver.observe(document.getElementById('stats-section'));
+
+    // ================= UTILITIES & ACCORDIONS =================
+    function toggleFaq(index) {
+      const ans = document.getElementById(`faq-ans-${index}`);
+      const chevron = document.getElementById(`faq-chevron-${index}`);
+      
+      // Close all other FAQs
+      faqs.forEach((_, idx) => {
+        if (idx !== index) {
+          const otherAns = document.getElementById(`faq-ans-${idx}`);
+          const otherChevron = document.getElementById(`faq-chevron-${idx}`);
+          otherAns.style.maxHeight = '0px';
+          otherChevron.classList.remove('rotate-180');
+        }
+      });
+
+      if (ans.style.maxHeight === '0px' || !ans.style.maxHeight) {
+        ans.style.maxHeight = ans.scrollHeight + 'px';
+        chevron.classList.add('rotate-180');
+      } else {
+        ans.style.maxHeight = '0px';
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    function toggleDarkMode() {
+      const root = document.documentElement;
+      if (root.classList.contains('dark')) {
+        root.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      } else {
+        root.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // ================= TOAST NOTIFICATION ENGINE =================
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = `flex items-center gap-3 px-5 py-4 rounded-2xl shadow-xl border backdrop-blur-md transform translate-y-4 opacity-0 transition-all duration-300 ${
+        type === 'success' 
+          ? 'bg-emerald-500/10 dark:bg-emerald-500/20 border-emerald-500/30 text-emerald-800 dark:text-emerald-300' 
+          : 'bg-red-500/10 dark:bg-red-500/20 border-red-500/30 text-red-800 dark:text-red-300'
+      }`;
+      
+      const icon = type === 'success' ? 'fa-circle-check text-emerald-500' : 'fa-circle-exclamation text-red-500';
+      toast.innerHTML = `
+        <i class="fa-solid ${icon} text-lg"></i>
+        <span class="font-medium text-xs font-display tracking-wide">${message}</span>
+      `;
+      
+      container.appendChild(toast);
+      
+      // Animation trigger
+      setTimeout(() => {
+        toast.classList.remove('translate-y-4', 'opacity-0');
+      }, 10);
+      
+      // Auto close
+      setTimeout(() => {
+        toast.classList.add('translate-y-4', 'opacity-0');
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // ================= MODAL TRIGGER CONTROLLERS =================
+    function openModal(contentHtml) {
+      const modal = document.getElementById('detail-modal');
+      const body = document.getElementById('modal-body');
+      body.innerHTML = contentHtml;
+      
+      modal.classList.remove('hidden');
+      // Reflow
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      modal.querySelector('.relative').classList.remove('scale-95');
+      modal.querySelector('.relative').classList.add('scale-100');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detail-modal');
+      modal.classList.add('opacity-0');
+      modal.querySelector('.relative').classList.remove('scale-100');
+      modal.querySelector('.relative').classList.add('scale-95');
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 300);
+    }
+
+    // Close modal on backing overlay click
+    document.getElementById('detail-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'detail-modal') closeModal();
+    });
+
+    // ================= DETAIL RENDERERS =================
+    function openServiceDetail(id) {
+      const s = services.find(serv => serv.id === id);
+      if (!s) return;
+      openModal(`
+        <div class="flex flex-col gap-4">
+          <div class="w-12 h-12 rounded-xl bg-primary-500/10 flex items-center justify-center text-primary-500 text-2xl mb-2">
+            <i class="fa-solid ${s.icon}"></i>
+          </div>
+          <span class="font-mono text-[9px] uppercase tracking-widest text-primary-500 font-bold">Technical Specifications</span>
+          <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white leading-tight">${s.title}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">${s.desc}</p>
+          <div class="border-t border-slate-100 dark:border-slate-800/80 pt-4 mt-2">
+            <h4 class="font-display font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white">Validation Standards</h4>
+            <p class="text-slate-500 dark:text-slate-400 text-xs mt-1.5 leading-relaxed">${s.details}</p>
+          </div>
+        </div>
+      `);
+    }
+
+    function openProductDetail(id) {
+      const p = products.find(prod => prod.id === id);
+      if (!p) return;
+      openModal(`
+        <div class="grid md:grid-cols-12 gap-6">
+          <div class="md:col-span-5 h-56 md:h-auto bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden">
+            <img src="${p.img}" alt="${p.title}" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+          </div>
+          <div class="md:col-span-7 flex flex-col gap-4">
+            <span class="font-mono text-[9px] uppercase tracking-widest text-primary-500 font-bold px-2.5 py-1 rounded-full bg-primary-500/10 w-max">${p.form}</span>
+            <h3 class="font-display font-bold text-2xl text-slate-900 dark:text-white leading-tight">${p.title}</h3>
+            <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">${p.desc}</p>
+            <div class="border-t border-slate-100 dark:border-slate-800/80 pt-4 mt-2">
+              <h4 class="font-display font-semibold text-xs text-slate-900 dark:text-white">Formulation Specifications</h4>
+              <p class="text-slate-500 dark:text-slate-400 text-xs mt-1">${p.details}</p>
+            </div>
+            <button onclick="prefillContactForProduct('${p.title}')" class="w-full py-3 bg-primary-500 hover:bg-primary-600 text-white font-semibold text-xs rounded-xl uppercase tracking-wider transition-all mt-4">
+              Submit Trade Partnership Inquiry
+            </button>
+          </div>
+        </div>
+      `);
+    }
+
+    function openNewsDetail(title, date, cat, desc, img) {
+      openModal(`
+        <div class="flex flex-col gap-4">
+          <div class="h-56 bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden mb-2">
+            <img src="${img}" alt="${title}" class="w-full h-full object-cover select-none" referrerPolicy="no-referrer">
+          </div>
+          <div class="flex items-center gap-3 font-mono text-[10px] text-slate-400">
+            <span>${date}</span>
+            <span class="px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800">${cat}</span>
+          </div>
+          <h3 class="font-display font-bold text-xl text-slate-900 dark:text-white leading-snug">${title}</h3>
+          <p class="text-slate-600 dark:text-slate-400 text-xs leading-relaxed">${desc}</p>
+        </div>
+      `);
+    }
+
+    // Prefill controllers connecting sections
+    function prefillCareer(position) {
+      navigateTo('careers');
+      const dropdown = document.getElementById('career-position');
+      dropdown.value = position;
+    }
+
+    function prefillContactForProduct(productName) {
+      closeModal();
+      navigateTo('contact');
+      document.getElementById('contact-subject').value = `Trade Distribution Inquiry: ${productName}`;
+      document.getElementById('contact-msg').value = `We are interested in discussing partnership, supply agreements, and DRAP registration requirements for ${productName}. Please supply pricing sheets and batch specs.`;
+    }
+
+    // ================= FORM VALIDATION SUBMISSIONS =================
+    function submitCareerForm(e) {
+      e.preventDefault();
+      const name = document.getElementById('career-name').value;
+      const position = document.getElementById('career-position').value;
+      showToast(`Application successfully routed! Thank you, ${name}. Our HR compliance team in Karachi will evaluate your CV for ${position}.`, 'success');
+      document.getElementById('careers-form').reset();
+    }
+
+    function submitNewsletter(e) {
+      e.preventDefault();
+      const email = document.getElementById('news-email').value;
+      showToast(`Success! ${email} registered for Intercon Pharma Insights newsletter.`, 'success');
+      document.getElementById('news-email').value = '';
+    }
+
+    function submitContact(e) {
+      e.preventDefault();
+      const name = document.getElementById('contact-name').value;
+      showToast(`Thank you, ${name}. Your trade inquiry has been secured. Our global logistics team in Karachi, Pakistan will contact you within 24 hours.`, 'success');
+      document.getElementById('contact-form').reset();
+    }
+  </script>
+</body>
+</html>
